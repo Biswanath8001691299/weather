@@ -10,9 +10,9 @@ const WidgetHeader = (props) => {
     // Update once switch checked
     const toggleChecked = (e) => {
         if (!e.target.checked) {
-            props.updateUnit('metric');
+            props?.updateUnit('metric');
         } else {
-            props.updateUnit('imperial');
+            props?.updateUnit('imperial');
         }
     };
 
@@ -20,7 +20,7 @@ const WidgetHeader = (props) => {
             <Card.Header className="weather-card-head">
             <div className="weather-card-head-align">
                 <div>
-                    <h1><b>{props?.city?.name}</b></h1>
+                    <h1><b  data-testid="city-name" >{props?.city?.name}</b></h1>
                     <span className="mb-2 bottom-header-text">{moment().format('MMMM Do YYYY')}</span><br />
                 </div>
                 <div style={{ display: 'flex' }}>
