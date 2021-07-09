@@ -18,6 +18,8 @@ const WeatherWidget = () => {
     const [errorLoocation, setErrorLocation] = useState(false);
     const [searchValue, setSearchValue] = useState(null);
 
+    const[currentgeoLoocation, setCurrentgeoLoocation] = useState([]);
+
     // Update the unit by clicking on the switch
     const updateUnit = (selectedUnit) => {
         setUnit(selectedUnit);
@@ -68,13 +70,30 @@ const WeatherWidget = () => {
     // This will ask the user to allow location and set this to state
     const getMyCurrentLocation = (unitValue) => {
         setLoader(true);
-        navigator?.geolocation?.getCurrentPosition((c) => {
-            let currentLoocation = {
-                longitude: c.coords.longitude,
-                latitude: c.coords.latitude
-            };
-            getData(unitValue, currentLoocation, null);
-        });
+
+        if(currentgeoLoocation.length === 0){
+            navigator?.geolocation?.getCurrentPosition((c) => {
+                let currentLoocation = {
+                    longitude: c.coords.longitude,
+                    latitude: c.coords.latitude
+                };
+                setCurrentgeoLoocation(currentLoocation);
+                getData(unitValue, currentLoocation, null);
+            },
+            function errorCallback(error) {
+                if (error.code == error.PERMISSION_DENIED) {
+                    // pop up dialog asking for location
+                    setErrorLocation(true);
+               
+                 
+                }
+            });
+        }else{
+            getData(unitValue, currentgeoLoocation, null);
+        }
+        
+
+
     }
 
     // Ask location and show the weather of the current location initially.
